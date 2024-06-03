@@ -1,0 +1,14 @@
+# .gitignore
+
+# Python
+backend/env/
+*.pyc
+__pycache__/
+
+# Django
+db.sqlite3
+media/
+
+# Node
+frontend/myapp/node_modules/
+frontend/myapp/build/
