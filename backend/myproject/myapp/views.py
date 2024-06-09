@@ -1,28 +1,37 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.http import JsonResponse
+from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import CustomUser
+
+User = get_user_model()
+
+@api_view(['GET'])
+def list_users(request):
+    if not request.user.is_admin:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    users = User.objects.all().values('id', 'username', 'first_name', 'email', 'is_admin')
+    return Response(list(users), status=status.HTTP_200_OK)
 
 @api_view(['POST'])
-def register(request):
-    data = request.data
+def update_user_admin_status(request, user_id):
+    if not request.user.is_admin:
+        return Response(status=status.HTTP_403_FORBIDDEN)
     try:
-        user = User.objects.create_user(
-            username=data['username'],
-            password=data['password'],
-            email=data['email'],
-            first_name=data['fullName']
-        )
-        return JsonResponse({'username': user.username, 'fullName': user.first_name, 'email': user.email}, status=201)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
+        user = User.objects.get(id=user_id)
+        user.is_admin = request.data.get('is_admin', user.is_admin)
+        user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
-def login(request):
-    data = request.data
-    user = authenticate(username=data['username'], password=data['password'])
-    if user is not None:
-        return JsonResponse({'username': user.username, 'fullName': user.first_name, 'email': user.email}, status=200)
-    else:
-        return JsonResponse({'error': 'Invalid credentials'}, status=400)
+@api_view(['DELETE'])
+def delete_user(request, user_id):
+    if not request.user.is_admin:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    try:
+        user = User.objects.get(id=user_id)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
