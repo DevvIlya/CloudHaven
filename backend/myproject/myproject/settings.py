@@ -1,6 +1,9 @@
 from pathlib import Path
 import environ
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 env = environ.Env()
 environ.Env.read_env()
@@ -21,6 +24,9 @@ CORS_ALLOWED_HOSTS = os.getenv('CORS_ALLOWED_HOSTS', '').split(',')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY_DJANGO')
+
+# Токен доступа для API
+API_TOKEN = os.getenv('API_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
@@ -134,6 +140,8 @@ USE_TZ = True
 
 # URL для статики
 STATIC_URL = 'static/'
+
+STORAGE_PATH = os.getenv('STORAGE_PATH')
 
 # Каталоги для статики
 STATICFILES_DIRS = [

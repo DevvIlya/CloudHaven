@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 from .models import UserStorage
-# from myproject.myproject.settings import STORAGE_PATH
+from myproject.settings import STORAGE_PATH
 
 
 class CustomUserCreationForm(UserCreationForm):
