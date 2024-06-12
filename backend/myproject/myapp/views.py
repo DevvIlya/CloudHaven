@@ -20,6 +20,9 @@ from .serializers import UserSerializer, StorageFilesSerializer
 
 logger = logging.getLogger(__name__)
 
+def index(request):
+    return render(request, 'index.html')
+
 @api_view(['GET'])
 def csrf_token_view(request):
     return Response({'csrfToken': get_token(request)})

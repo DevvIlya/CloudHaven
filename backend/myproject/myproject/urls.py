@@ -8,6 +8,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from myapp.views import custom_register, csrf_token_view
 
 from myapp.views import UserViewSet, StorageFilesViewSet
+from myapp.views import index
 
 
 router = routers.DefaultRouter()
@@ -15,6 +16,7 @@ router.register(r'users', UserViewSet, basename="users")
 router.register(r'storagefiles', StorageFilesViewSet)
 
 urlpatterns = [
+    path('', index, name='index'),
     path('', include(router.urls)),
     path("admin/", admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
