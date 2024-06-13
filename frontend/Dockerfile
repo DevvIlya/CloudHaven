@@ -4,12 +4,14 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
+RUN npm install -g serve
+
 RUN npm install
 
 COPY . ./
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 5000
 
-CMD ["npm", "run", "serve"]
+CMD ["serve", "-s", "build", "-l", "5000"]
