@@ -23,6 +23,21 @@ logger = logging.getLogger(__name__)
 def index(request):
     return render(request, 'index.html')
 
+def admin_page(request):
+    return render(request, 'AdminPage.tsx')
+
+def file_page(request):
+    return render(request, 'FilePage.tsx')
+
+def main_page(request):
+    return render(request, 'MainPage.tsx')
+
+def not_found_page(request):
+    return render(request, 'NotFoundPage.tsx')
+
+def storage_page(request):
+    return render(request, 'StoragePage.tsx')
+
 @api_view(['GET'])
 def csrf_token_view(request):
     return Response({'csrfToken': get_token(request)})

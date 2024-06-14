@@ -66,7 +66,7 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend', 'src')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -149,7 +149,7 @@ STORAGE_PATH = os.getenv('STORAGE_PATH')
 
 # Каталоги для статики
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'frontend', 'public', 'static'),
 ]
 
 # Настройки медиа файлов
