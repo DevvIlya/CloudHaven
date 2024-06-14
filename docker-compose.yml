@@ -29,6 +29,7 @@ services:
 
     volumes:
       - ./backend:/code
+      - ./frontend/public/static:/code/frontend/public/static
     ports:
       - "8000:8000"
     depends_on:
