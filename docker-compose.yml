@@ -29,7 +29,9 @@ services:
 
     volumes:
       - ./backend:/code
-      - ./frontend/public/static:/code/frontend/public/static
+      - ./frontend/build/static:/code/myproject/frontend/public/static
+      - django_static_volume:/code/myproject/static
+      - django_media_volume:/code/myproject/media
     ports:
       - "8000:8000"
     depends_on:
@@ -64,3 +66,5 @@ services:
 
 volumes:
   postgres_data:
+  django_static_volume:
+  django_media_volume:

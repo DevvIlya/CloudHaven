@@ -27,7 +27,7 @@ def admin_page(request):
     return render(request, 'AdminPage.tsx')
 
 def file_page(request):
-    return render(request, 'FilePage.tsx')
+    return render(request, 'FilePage.html')
 
 def main_page(request):
     return render(request, 'MainPage.tsx')
@@ -70,6 +70,24 @@ class StorageFilesViewSet(ModelViewSet):
     queryset = StorageFiles.objects.all()
     serializer_class = StorageFilesSerializer
     permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=['get'], url_path='download/(?P<short_link>[^/.]+)')
+    def download_by_short_link(self, request, short_link=None):
+        try:
+            file_record = StorageFiles.objects.get(short_link=short_link)
+            file_record.last_download_date = timezone.now()
+            file_record.save()
+
+            file_path = file_record.file.path
+            with open(file_path, 'rb') as file:
+                response = HttpResponse(file.read(), content_type='application/octet-stream')
+                response['Content-Disposition'] = f'attachment; filename={file_record.original_name}'
+                return response
+        except StorageFiles.DoesNotExist:
+            raise Http404("File not found")
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_queryset(self):
         user = self.request.user

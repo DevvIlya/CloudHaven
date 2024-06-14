@@ -26,14 +26,6 @@ API_TOKEN = os.getenv('API_TOKEN')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-# ALLOWED_HOSTS = [
-#     CORS_ALLOWED_HOSTS,
-#     '127.0.0.1',
-#     'localhost',
-# ]
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -150,7 +142,9 @@ STORAGE_PATH = os.getenv('STORAGE_PATH')
 # Каталоги для статики
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend', 'public', 'static'),
+    '/code/myproject/frontend/public/static',
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Настройки медиа файлов
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

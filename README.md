@@ -23,3 +23,9 @@ sudo docker-compose stop
 ```bash
 sudo docker-compose down
 ```
+
+## Полностью удалить все данные
+
+```bash
+sudo docker-compose down -v
+```
