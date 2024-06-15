@@ -5,6 +5,15 @@ FROM python:3.10.12
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+RUN apt update \
+    && apt install -y \
+    postgresql-server-dev-all \
+    gcc \
+    python3-dev \
+    musl-dev \
+    && apt clean
+
+RUN pip install --upgrade pip
 
 WORKDIR /code
 
@@ -26,5 +35,6 @@ RUN chmod +x /wait-for-it.sh
 CMD ["sh", "-c", "/wait-for-it.sh db:5432 -- \
     python backend/myproject/manage.py makemigrations && \
     python backend/myproject/manage.py migrate --noinput && \
-    python backend/myproject/manage.py createsuperuser --noinput && \
+    python backend/myproject/manage.py collectstatic --noinput && \
+    python backend/myproject/create_superuser.py && \
     python backend/myproject/manage.py runserver 0.0.0.0:8000"]
