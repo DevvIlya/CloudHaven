@@ -1,4 +1,12 @@
 from pathlib import Path
+import environ
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f$lnu=6ixlgyt-v!3d41drs0s*u)6#r1$!-9usal5onx)-e!vk'
+SECRET_KEY = os.getenv('SECRET_KEY_DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,7 +54,7 @@ ROOT_URLCONF = 'cloudhaven.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,10 +73,21 @@ WSGI_APPLICATION = 'cloudhaven.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+AUTH_USER_MODEL = 'backend.UserStorage'
+
+POSTGRES_DB = os.getenv('POSTGRES_DB')
+POSTGRES_USER = os.getenv('POSTGRES_USER')
+POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+DATABASE_URL = os.getenv('DATABASE_URL')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': POSTGRES_DB,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -107,14 +126,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
+
+# статика для nginx
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+STORAGE_PATH = env('STORAGE_PATH')
+
+# Основной URL для медиафайлов
+MEDIA_URL = f"/{env('STORAGE_PATH')}/"
+
+# Корневая директория для медиафайлов
+MEDIA_ROOT = os.path.join(BASE_DIR, env('STORAGE_PATH'))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
        'http://localhost:3000',
