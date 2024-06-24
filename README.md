@@ -1,31 +1,59 @@
-# Облачное хранилище CloudHaven
+# Облачное хранилище Cloud Haven
 
-## Сборка контейнеров
+## инструкция по запуску
 
-```bash
-sudo docker-compose up --build
-```
++ Скачать проект
 
-## Запуск собранных контейнеров
++ создать файл .env в корне проекта
 
-```bash
-sudo docker-compose up
-```
+скопировать в него код и подставить свои значения. Без пробела.
 
-## Остановить контейнеры
+'''
+POSTGRES_DB=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+SECRET_KEY_DJANGO=
+CORS_ALLOWED_HOSTS=example.com,localhost, 127.0.0.1,localhost, [::1], 0.0.0.0
+ALLOWED_HOSTS=127.0.0.1,localhost, [::1], 0.0.0.0
+STORAGE_PATH=media
+DJANGO_SUPERUSER_USERNAME=
+DJANGO_SUPERUSER_PASSWORD=
+DJANGO_SUPERUSER_EMAIL=dev@example.com
+'''
++ Устанавливаем зависимости
 
-```bash
-sudo docker-compose stop
-```
+'pip install -r requirements.txt'
 
-## Остановить и удалить контейнеры, сети и тома
++ Проводим миграции 
 
-```bash
-sudo docker-compose down
-```
+перейти в директорию
 
-## Полностью удалить все данные
+'cd cloudhaven'
 
-```bash
-sudo docker-compose down -v
-```
+запустить скрипт create_superuser.py, он подтянет данные из .env
+
+'''
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+'''
+
+запустить скрипт get_token.py, он получит токен и запишет в .env
+
+в браузере открыть
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/admin
+
+
+в новом окне терминала перейти в директорию
+
+cloudhaven/frontend
+
+запустить 
+
+'npm run dev'
+
+в браузере открыть
+
+http://localhost:5173/
+
