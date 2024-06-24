@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudHaven</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'js/app.js' %}"></script>
+</head>
+<body>
+    <h1>Welcome to Cloud Haven</h1>
+    <ul>
+        <li><a href="{% url 'admin_page' %}">Admin Page</a></li>
+        <li><a href="{% url 'file_page' %}">File Page</a></li>
+        <li><a href="{% url 'main_page' %}">Main Page</a></li>
+        <li><a href="{% url 'not_found_page' %}">Not Found Page</a></li>
+        <li><a href="{% url 'storage_page' %}">Storage Page</a></li>
+        <li><a href="{% url 'custom_register' %}">Register Page</a></li>
+        <li><a href="{% url 'api_token_auth' %}">API Token Auth</a></li>
+        <li><a href="{% url 'api-csrf' %}">API CSRF</a></li>
+        <li><a href="{% url 'storagefiles-by-user' %}">Storage Files by User</a></li>
+        <li><a href="{% url 'storagefiles-generate-short-link' 1 %}">Generate Short Link for File ID 1</a></li>
+    </ul>
+    {% block content %}{% endblock %}
+</body>
+</html>

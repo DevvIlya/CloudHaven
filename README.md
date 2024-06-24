@@ -54,4 +54,6 @@ cloudhaven/frontend
 'npm run dev'
 
 в браузере открыть
+
 http://localhost:5173/
+
