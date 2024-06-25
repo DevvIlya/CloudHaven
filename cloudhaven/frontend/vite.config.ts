@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000/', // URL Django сервера
+        // target: 'http://127.0.0.1:8000/', // URL Django сервера
+        target: 'http://cloudhaven-backend:8000', // используйте имя сервиса из docker-compose
         changeOrigin: true,
         secure: false,
       },

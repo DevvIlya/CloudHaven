@@ -1,0 +1,73 @@
+version: '2.20.3'
+
+services:
+  db:
+    image: postgres:14.12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    security_opt:
+      - no-new-privileges:false
+    networks:
+      - backend-network
+
+  backend:
+    build:
+      context: ./cloudhaven
+      dockerfile: Dockerfile
+    container_name: cloudhaven-backend
+    command: sh -c "
+      /wait-for-it.sh db:5432 -- \
+      python manage.py makemigrations && \
+      python manage.py migrate --noinput && \
+      python create_superuser.py && \
+      python manage.py collectstatic --noinput && \
+      python manage.py runserver 0.0.0.0:8000" 
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend-network
+
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - SECRET_KEY_DJANGO=${SECRET_KEY_DJANGO}
+      - CORS_ALLOWED_HOSTS=${CORS_ALLOWED_HOSTS}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - STORAGE_PATH=${STORAGE_PATH}
+      - API_TOKEN=${API_TOKEN}
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+
+  frontend:
+    build:
+      context: ./cloudhaven/frontend
+      dockerfile: Dockerfile
+    container_name: cloudhaven-frontend
+    command: >
+      npm run dev -- --host 0.0.0.0
+    ports:
+      - "5173:5173"
+    networks:
+      - backend-network
+
+volumes:
+  postgres_data:
+
+networks:
+  backend-network:
+    driver: bridge

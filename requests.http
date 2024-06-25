@@ -1,8 +1,5 @@
-@base = http://localhost:8000
-@baseApiUrl = http://localhost:8000/api
-
-# Аутентификация
-POST {{base}}/api-token-auth/
+# Аутентификация (не требуется при использовании сессионной аутентификации)
+POST http://localhost:8000/api-token-auth/
 Content-Type: application/json
 
 {
@@ -10,24 +7,24 @@ Content-Type: application/json
   "password": "{{ env.DJANGO_PASSWORD }}"
 }
 
-# Получение CSRF токена
-GET {{base}}/api/csrf/
+# Получение CSRF токена (перед использованием сессионной аутентификации)
+GET http://localhost:8000/api/csrf/
 
 # Получение списка пользователей
-GET {{baseApiUrl}}/users/
-Authorization: Token {{ env.API_TOKEN }}
+GET http://localhost:8000/api/users/
+Authorization: 
 
 # Выход из системы
-POST {{base}}/accounts/logout/
+POST http://localhost:8000/accounts/logout/
 Content-Type: application/json
-Authorization: Token {{ env.API_TOKEN }}
+Authorization: 
 
 {
   "username": "{{ env.DJANGO_USERNAME }}"
 }
 
 # Создание пользователя
-POST {{base}}/accounts/register/
+POST http://localhost:8000/accounts/register/
 Content-Type: application/json
 
 {
@@ -40,10 +37,10 @@ Content-Type: application/json
 }
 
 # Получение списка файлов пользователя
-GET {{baseApiUrl}}/storagefiles/by_user/
-Authorization: Token {{ env.API_TOKEN }}
+GET http://localhost:8000/api/storagefiles/by_user/
+Authorization: 
 
 # Генерация короткой ссылки для файла
-POST {{baseApiUrl}}/storagefiles/1/generate_short_link/
+POST http://localhost:8000/api/storagefiles/1/generate_short_link/
 Content-Type: application/json
-Authorization: Token {{ env.API_TOKEN }}
+Authorization: 

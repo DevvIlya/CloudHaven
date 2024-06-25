@@ -17,12 +17,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY_DJANGO')
-API_TOKEN = os.getenv('API_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default='True') == 'True' # type: ignore
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'cloudhaven-backend']
 
 
 # Application definition
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': POSTGRES_DB,
         'USER': POSTGRES_USER,
         'PASSWORD': POSTGRES_PASSWORD,
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -152,9 +152,15 @@ CORS_ORIGIN_WHITELIST = (
        'http://localhost:3000',
 )
 
+# Установите сессионные ключи и параметры
+SESSION_COOKIE_NAME = 'sessionid'  # Имя куки для хранения сессионного идентификатора
+SESSION_COOKIE_SECURE = False  # Установите True для использования HTTPS
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # False - сессия хранится на сервере
+SESSION_COOKIE_AGE = 1209600  # Установка срока действия куки
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [

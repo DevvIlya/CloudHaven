@@ -19,42 +19,17 @@
   DJANGO_SUPERUSER_USERNAME=
   DJANGO_SUPERUSER_PASSWORD=
   DJANGO_SUPERUSER_EMAIL=dev@example.com
-```
+  ```
 
-+ Устанавливаем зависимости
++ Запустить докер
 
-```pip install -r requirements.txt```
-
-+ Проводим миграции 
-
-перейти в директорию
-
-```cd cloudhaven```
-
-+ запустить скрипт create_superuser.py, он подтянет данные из .env
-
-```
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver
-```
-
-+ запустить скрипт get_token.py, он получит токен и запишет в .env
+```docker-compose up --build```
 
 в браузере открыть
 
-http://127.0.0.1:8000/
-http://127.0.0.1:8000/admin
+<http://127.0.0.1:8000/>
+<http://127.0.0.1:8000/admin>
 
+фронтенд доступен по
 
-в новом окне терминала перейти в директорию
-
-cloudhaven/frontend
-
-+ запустить 
-
-```npm run dev```
-
-в браузере открыть
-
-http://localhost:5173/
+<http://localhost:5173/>
