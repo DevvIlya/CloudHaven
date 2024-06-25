@@ -16,6 +16,7 @@ from rest_framework.viewsets import ModelViewSet
 from .forms import CustomUserCreationForm
 from .models import UserStorage, StorageFiles
 from .serializers import UserSerializer, StorageFilesSerializer
+from django.http import JsonResponse
 
 
 logger = logging.getLogger(__name__)
@@ -124,3 +125,11 @@ class StorageFilesViewSet(ModelViewSet):
         if os.path.exists(file_path):
             os.remove(file_path)
         instance.delete()
+
+def endpoint_view(request):
+    try:
+        # Логика обработки запроса
+        data = {'message': 'Hello from API endpoint!'}
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
