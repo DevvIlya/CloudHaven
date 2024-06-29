@@ -6,8 +6,8 @@ backend/env/
 __pycache__/
 
 # Django
-db.sqlite3
-media/
+# db.sqlite3
+# media/
 
 # Node
 frontend/myapp/node_modules/
@@ -93,6 +93,7 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
+env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

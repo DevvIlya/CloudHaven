@@ -1,0 +1,46 @@
+# Аутентификация (не требуется при использовании сессионной аутентификации)
+POST http://localhost:8000/api-token-auth/
+Content-Type: application/json
+
+{
+  "username": "{{ env.DJANGO_USERNAME }}",
+  "password": "{{ env.DJANGO_PASSWORD }}"
+}
+
+# Получение CSRF токена (перед использованием сессионной аутентификации)
+GET http://localhost:8000/api/csrf/
+
+# Получение списка пользователей
+GET http://localhost:8000/api/users/
+Authorization: 
+
+# Выход из системы
+POST http://localhost:8000/accounts/logout/
+Content-Type: application/json
+Authorization: 
+
+{
+  "username": "{{ env.DJANGO_USERNAME }}"
+}
+
+# Создание пользователя
+POST http://localhost:8000/accounts/register/
+Content-Type: application/json
+
+{
+  "username": "new_user",
+  "email": "new_user@example.com",
+  "first_name": "New",
+  "last_name": "User",
+  "password1": "newpassword",
+  "password2": "newpassword"
+}
+
+# Получение списка файлов пользователя
+GET http://localhost:8000/api/storagefiles/by_user/
+Authorization: 
+
+# Генерация короткой ссылки для файла
+POST http://localhost:8000/api/storagefiles/1/generate_short_link/
+Content-Type: application/json
+Authorization: 

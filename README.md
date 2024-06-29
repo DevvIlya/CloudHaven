@@ -1,31 +1,35 @@
-# Облачное хранилище CloudHaven
+# Облачное хранилище Cloud Haven
 
-## Сборка контейнеров
+## инструкция по запуску
 
-```bash
-sudo docker-compose up --build
-```
++ **Скачать проект**
 
-## Запуск собранных контейнеров
+создать файл .env в корне проекта
 
-```bash
-sudo docker-compose up
-```
+скопировать в него код и подставить свои значения. Без пробела.
 
-## Остановить контейнеры
+  ```
+  POSTGRES_DB=
+  POSTGRES_USER=
+  POSTGRES_PASSWORD=
+  SECRET_KEY_DJANGO=
+  CORS_ALLOWED_HOSTS=example.com,localhost, 127.0.0.1,localhost, [::1], 0.0.0.0
+  ALLOWED_HOSTS=127.0.0.1,localhost, [::1], 0.0.0.0
+  STORAGE_PATH=media
+  DJANGO_SUPERUSER_USERNAME=
+  DJANGO_SUPERUSER_PASSWORD=
+  DJANGO_SUPERUSER_EMAIL=dev@example.com
+  ```
 
-```bash
-sudo docker-compose stop
-```
++ Запустить докер
 
-## Остановить и удалить контейнеры, сети и тома
+```docker-compose up --build```
 
-```bash
-sudo docker-compose down
-```
+в браузере открыть
 
-## Полностью удалить все данные
+<http://127.0.0.1:8000/>
+<http://127.0.0.1:8000/admin>
 
-```bash
-sudo docker-compose down -v
-```
+фронтенд доступен по
+
+<http://localhost:5173/>
